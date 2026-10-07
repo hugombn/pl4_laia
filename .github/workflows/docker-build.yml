@@ -83,9 +83,13 @@ jobs:
           name: model
           path: .
 
+      # GHCR only accepts lowercase image names (repo is "Pl4")
+      - name: Lowercase repository name
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}/ml-flask-app:latest
+          tags: ghcr.io/${{ env.REPO }}/ml-flask-app:latest
